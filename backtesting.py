@@ -13,52 +13,26 @@ DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
 
 def backtesting(
-    interval="minute60",
+    data,
     ticker="KRW-XRP",
-    start="2020-12-01T00:00:00",
-    end="2021-02-18T23:59:59",
 ):
     seed_movey = 100000
-    time_standard = "+09:00"
     count = 30
+
     bot = Trader(
         ticker=ticker,
         seed_movey=seed_movey,
     )
 
-    start_date = datetime.strptime(start, DATETIME_FORMAT)
-    end_date = datetime.strptime(end, DATETIME_FORMAT)
-
-    if interval == "minute5":
-        interval_time = timedelta(minutes=5)
-    elif interval == "minute60":
-        interval_time = timedelta(hours=1)
-    else:
-        ValueError
-
-    url = _get_url_ohlcv(interval=interval)
-    n_chance = (end_date - start_date) // interval_time
-
-    test_data = get_timepoint_ohlcv(
-        url,
-        ticker=ticker,
-        to=end + time_standard,
-        count=count + n_chance,
-    )
     results = []
-    for i in range(n_chance):
-        start_date += interval_time
-        timepoint = start_date.strftime(DATETIME_FORMAT) + time_standard
+    for i in range(data.shape[0] - count):
+        data = data.iloc[i: count + i]
 
-        data = test_data.iloc[i: count + i]
-
-        low = data['low'][-1]
-        high = data['high'][-1]
-
+        low, high = data['low'][-1], data['high'][-1]
         bot.current_price = data['close'][-2]
         status, price = bot.check_status_price(data)
 
-        result = {"timepoint": timepoint}
+        result = {"timepoint": data.index[-1]}
         if status == "buy":
             available, price = check_available_bought_price(price, low, high)
             if available:
@@ -73,7 +47,6 @@ def backtesting(
             result["status"] = "none"
 
         result.update(bot.wallet)
-        result.update()
         results.append(result)
         print(result)
 
@@ -96,4 +69,6 @@ def check_available_sold_price(price, low, high):
 
 
 if __name__ == "__main__":
-    backtesting()
+    data_path = "data/minute5_data.parquet"
+    data = pd.read_parquet(data_path)
+    backtesting(data=data)

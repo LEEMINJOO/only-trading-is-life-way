@@ -27,7 +27,7 @@ class Trader:
     def buy(self, price):
         available = self.check_available_bought_wallet()
         if available:
-            volume = self.cash / (price * (1 + FEE))
+            volume = int(self.cash / (price * (1 + FEE)))
             self.avg_price = self.volume * self.avg_price + volume * price
             self.volume += volume
             self.avg_price /= self.volume
