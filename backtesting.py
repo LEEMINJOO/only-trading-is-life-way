@@ -7,7 +7,7 @@ DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
 
 def backtesting(
-    data,
+    test_data,
     ticker="KRW-XRP",
 ):
     seed_movey = 100000
@@ -19,9 +19,8 @@ def backtesting(
     )
 
     results = []
-    for i in range(data.shape[0] - count):
-        data = data.iloc[i : count + i]
-
+    for i in range(test_data.shape[0] - count):
+        data = test_data.iloc[i : count + i]
         low, high = data["low"][-1], data["high"][-1]
         bot.current_price = data["close"][-2]
         status, price = bot.check_status_price(data)
@@ -66,4 +65,4 @@ def check_available_sold_price(price, low, high):
 if __name__ == "__main__":
     data_path = "data/minute5_data.parquet"
     data = pd.read_parquet(data_path)
-    backtesting(data=data)
+    backtesting(test_data=data)
