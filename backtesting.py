@@ -1,12 +1,6 @@
-from datetime import datetime
-from datetime import timedelta
 import pandas as pd
 
-import pyupbit
-from pyupbit.quotation_api import _get_url_ohlcv
-
 from trader import Trader
-from utils import get_timepoint_ohlcv
 
 
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
@@ -26,10 +20,10 @@ def backtesting(
 
     results = []
     for i in range(data.shape[0] - count):
-        data = data.iloc[i: count + i]
+        data = data.iloc[i : count + i]
 
-        low, high = data['low'][-1], data['high'][-1]
-        bot.current_price = data['close'][-2]
+        low, high = data["low"][-1], data["high"][-1]
+        bot.current_price = data["close"][-2]
         status, price = bot.check_status_price(data)
 
         result = {"timepoint": data.index[-1]}
@@ -60,6 +54,7 @@ def check_available_bought_price(price, low, high):
     if low < price:
         return True, min(high, price)
     return False, None
+
 
 def check_available_sold_price(price, low, high):
     assert low <= high

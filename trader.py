@@ -5,9 +5,10 @@ FEE = 0.0005
 MIN_BOUGHT_MONEY = 100
 MIN_SOLD_TICKER = 0.01
 
+
 class Trader:
     def __init__(
-        self, 
+        self,
         ticker,
         seed_movey,
     ):
@@ -19,9 +20,9 @@ class Trader:
         self.current_price = 0
 
     def check_status_price(self, df):
-        status = ['buy', 'sell', 'none']
+        status = ["buy", "sell", "none"]
         status = random.sample(status, 1)[0]
-        price = df['close'][-2]
+        price = df["close"][-2]
         return status, price
 
     def buy(self, price):
@@ -39,7 +40,7 @@ class Trader:
         available = self.check_available_sold_wallet()
         if available:
             self.cash += self.volume * (price * (1 - FEE))
-            self.volume = 0.
+            self.volume = 0.0
             return True
         return False
 
@@ -55,17 +56,16 @@ class Trader:
 
     @property
     def total_money(self):
-        return self.cash \
-               + self.volume \
-               * self.current_price  # will be current price in api
+        return (
+            self.cash + self.volume * self.current_price
+        )  # will be current price in api
 
     @property
     def wallet(self):
         return {
-            'cash': self.cash,
-            'volume': self.volume,
-            'avg_price': self.avg_price,
-            'current_price': self.current_price,
-            'total_money': self.total_money,
+            "cash": self.cash,
+            "volume": self.volume,
+            "avg_price": self.avg_price,
+            "current_price": self.current_price,
+            "total_money": self.total_money,
         }
-
