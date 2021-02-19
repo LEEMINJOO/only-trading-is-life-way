@@ -27,8 +27,8 @@ class Trader:
 
     def buy(self, price):
         available = self.check_available_bought_wallet()
-        if available:
-            volume = int(self.cash / (price * (1 + FEE)))
+        volume = int(self.cash / (price * (1 + FEE)))
+        if available and volume > 0:
             self.avg_price = self.volume * self.avg_price + volume * price
             self.volume += volume
             self.avg_price /= self.volume
@@ -41,6 +41,7 @@ class Trader:
         if available:
             self.cash += self.volume * (price * (1 - FEE))
             self.volume = 0.0
+            self.avg_price = 0.0
             return True
         return False
 

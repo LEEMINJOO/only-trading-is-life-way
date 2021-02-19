@@ -41,7 +41,6 @@ def backtesting(
 
         result.update(bot.wallet)
         results.append(result)
-        print(result)
 
     ROI = (bot.total_money / seed_movey) * 100
     print(ROI, "!!!!!")
