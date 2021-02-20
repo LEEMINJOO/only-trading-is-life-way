@@ -29,12 +29,6 @@ class Trader:
         price = df["close"][-2]
         return status, price
 
-    def _change_bear_to_bull(
-        self,
-        diff,
-    ):
-        pass
-
     def buy(self, price):
         available = self.check_available_bought_wallet()
         volume = int(self.cash / (price * (1 + FEE)))
