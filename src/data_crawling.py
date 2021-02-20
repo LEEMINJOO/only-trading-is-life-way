@@ -14,6 +14,7 @@ DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
 
 def data_crawling(
+    data_path,
     interval="minute5",
     ticker="KRW-XRP",
     start="2020-12-01T00:00:00",
@@ -42,8 +43,9 @@ def data_crawling(
         sleep(1)
     total_data = pd.concat(total_data)
     total_data = total_data.loc[~total_data.index.duplicated()]
-    total_data.to_parquet("data/minute5_data.parquet")
+    total_data.to_parquet(data_path)
 
 
 if __name__ == "__main__":
-    data_crawling()
+    data_path = "../data/minute5_data.parquet"
+    data_crawling(data_path)

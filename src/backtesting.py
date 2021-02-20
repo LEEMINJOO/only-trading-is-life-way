@@ -23,7 +23,7 @@ def backtesting(
         data = test_data.iloc[i : count + i]
         low, high = data["low"][-1], data["high"][-1]
         bot.current_price = data["close"][-2]
-        status, price = bot.check_status_price(data)
+        status, price = bot.check_market_status_price(data)
 
         result = {"timepoint": data.index[-1]}
         if status == "buy":
@@ -62,6 +62,6 @@ def check_available_sold_price(price, low, high):
 
 
 if __name__ == "__main__":
-    data_path = "data/minute5_data.parquet"
+    data_path = "../data/minute5_data.parquet"
     data = pd.read_parquet(data_path)
     backtesting(test_data=data)

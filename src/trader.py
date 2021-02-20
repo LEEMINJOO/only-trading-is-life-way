@@ -19,11 +19,21 @@ class Trader:
         self.avg_price = 0
         self.current_price = 0
 
-    def check_status_price(self, df):
+        self.rolling_size = 60
+        self.big_size = 20
+        self.small_size = 5
+
+    def check_market_status_price(self, df):
         status = ["buy", "sell", "none"]
         status = random.sample(status, 1)[0]
         price = df["close"][-2]
         return status, price
+
+    def _change_bear_to_bull(
+        self,
+        diff,
+    ):
+        pass
 
     def buy(self, price):
         available = self.check_available_bought_wallet()
