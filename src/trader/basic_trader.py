@@ -34,7 +34,7 @@ class BasicTrader:
         # 10,000원에 해당하는 만큼 할당합니다.
         if volume is None:
             volume = krw_price / price
-            volume = round(volume, 2)
+            volume = round(volume, 5)
 
         krw_price = price * volume
         if self.krw_balance > krw_price:
