@@ -1,3 +1,5 @@
+import random
+import pandas as pd
 import pyupbit
 
 
@@ -17,6 +19,17 @@ class BasicTrader:
     @property
     def ticker_balance(self):
         return self.upbit.get_balance(ticker=self.ticker)
+
+    def check_market_status_price(
+        self,
+        df: pd.DataFrame,
+    ):
+        # 랜덤으로 사고 팔 것인지 결정합니다.
+        status = ["buy", "sell", "none"]
+        status = random.sample(status, 1)[0]
+        # 거래 금액은 최근의 종가로 합니다.
+        price = df["close"].iloc[-1]
+        return status, price
 
     def buy(
         self,
