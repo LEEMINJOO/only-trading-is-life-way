@@ -2,9 +2,8 @@ class MockUpbit:
     def __init__(
         self,
         seed_money: float,  # 초기 잔고를 입력받습니다.
+		ticker: str = "KRW-ETH",  # 이더림움을 기본으로 하겠습니다.
     ):
-        # 코인은 이더리움으로 고정하겠습니다.
-        ticker = "KRW-ETH"
 
         # 소유한 현금과 각 코인의 정보를 갖는 
         # `self.balances`를 정의합니다.
@@ -72,10 +71,10 @@ class MockUpbit:
         total_price = price * volume * (1 - self.fee)
 
         # 판매하고자 하는 코인의 수량보다 많이 가지고 있을 때만 거래합니다.
-        if self.balances[ticker] < volume:
+        if self.balances[ticker]["balance"] < volume:
             return False
 
         # 거래한 만큼 잔고를 변화시킵니다.
-        self.balances["KRW"] += total_price
-        self.balances[ticker] -= volume
+        self.balances["KRW"]["balance"] += total_price
+        self.balances[ticker]["balance"] -= volume
         return True
